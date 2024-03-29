@@ -53,8 +53,14 @@ class Board : Fragment() {
     }
 
     private fun newGame() {
+        // clear clickableTileIds
+        clickableTileIds.clear()
 
+        // clear clickedIds
+        clickedIds.clear()
 
+        // get rid of any text
+        binding.currentWord.text = ""
 
         // Access the tile TextViews using binding
         for (i in tileIds.indices) {
@@ -151,8 +157,6 @@ class Board : Fragment() {
                 clickableTileIds.add(tileId)
             }
         }
-
-
     }
 }
 
