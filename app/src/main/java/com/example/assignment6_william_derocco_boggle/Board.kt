@@ -83,25 +83,26 @@ class Board : Fragment() {
     }
 
     private fun checkWordValidity(word: String) {
+        val wordLower = word.lowercase()
         // Check if the word exists in the set of valid words
-        if (word.length < 4) {
+        if (wordLower.length < 4) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word: $word (must contain at least 4 letters)")
-        } else if (!hasTwoVowels(word)) {
+            showToast("Invalid word: $wordLower (must contain at least 4 letters)")
+        } else if (!hasTwoVowels(wordLower)) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word: $word (must contain at least 2 vowels)")
-        } else if (!validWords.contains(word.lowercase())) {
+            showToast("Invalid word: $wordLower (must contain at least 2 vowels)")
+        } else if (!validWords.contains(wordLower.lowercase())) {
             // Word is not valid, handle accordingly
-            showToast("Invalid word: $word (not in dictionary)")
+            showToast("Invalid word: $wordLower (not in dictionary)")
         } else {
             // Word is VALID, handle accordingly
-            showToast("Valid word: $word")
+            showToast("Valid word: $wordLower")
         }
     }
 
     private fun hasTwoVowels(word: String): Boolean {
         // ensure word has at least two vowels
-        val vowels = "aeiouAEIOU"
+        val vowels = "aeiou"
         var vowelCount = 0
 
         for (char in word) {
@@ -116,7 +117,7 @@ class Board : Fragment() {
         return false
     }
 
-    private fun newGame() {
+    fun newGame() {
         // clear clickableTileIds
         clickableTileIds.clear()
 
