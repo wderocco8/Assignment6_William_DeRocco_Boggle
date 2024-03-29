@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="activeTile">#b3b3bf</color>
+    <color name="inactiveTile">#767680</color>
 </resources>
