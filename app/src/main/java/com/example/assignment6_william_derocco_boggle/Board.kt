@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.assignment6_william_derocco_boggle.databinding.FragmentBoardBinding
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
 
 class Board : Fragment() {
@@ -26,6 +31,9 @@ class Board : Fragment() {
     private val clickableTileIds = mutableSetOf<Int>()
     // set to store all clicked IDs in the current word
     private val clickedIds = mutableSetOf<Int>()
+    // set of all valid words
+    private val validWords = HashSet<String>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +53,67 @@ class Board : Fragment() {
         binding.clearButton.setOnClickListener {
             clearWord()
         }
+
+        // Load valid words when the fragment is created
+        loadValidWords()
+
+        // Create button listener for submitting a word
+        binding.submitButton.setOnClickListener {
+            checkWordValidity(binding.currentWord.text.toString())
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun loadValidWords() {
+        try {
+            // Open the file containing valid words
+            val inputStream: InputStream = resources.openRawResource(R.raw.words)
+
+            // Create a reader to read the file
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            var line: String?
+            // Read each line and add it to the set of valid words
+            while (reader.readLine().also { line = it } != null) {
+                validWords.add(line!!.trim())
+            }
+            // Close the reader
+            reader.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun checkWordValidity(word: String) {
+        // Check if the word exists in the set of valid words
+        if (word.length < 4) {
+            // Word doesn't contain 2 vowels
+            showToast("Invalid word: $word (must contain at least 4 letters)")
+        } else if (!hasTwoVowels(word)) {
+            // Word doesn't contain 2 vowels
+            showToast("Invalid word: $word (must contain at least 2 vowels)")
+        } else if (!validWords.contains(word.lowercase())) {
+            // Word is not valid, handle accordingly
+            showToast("Invalid word: $word (not in dictionary)")
+        } else {
+            // Word is VALID, handle accordingly
+            showToast("Valid word: $word")
+        }
+    }
+
+    private fun hasTwoVowels(word: String): Boolean {
+        // ensure word has at least two vowels
+        val vowels = "aeiouAEIOU"
+        var vowelCount = 0
+
+        for (char in word) {
+            if (char in vowels) {
+                vowelCount++
+                if (vowelCount >= 2) {
+                    return true
+                }
+            }
+        }
+
+        return false
     }
 
     private fun newGame() {
@@ -157,6 +221,15 @@ class Board : Fragment() {
                 clickableTileIds.add(tileId)
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 
