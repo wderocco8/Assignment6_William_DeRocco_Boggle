@@ -7,6 +7,10 @@ android {
     namespace = "com.example.assignment6_william_derocco_boggle"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.assignment6_william_derocco_boggle"
         minSdk = 24

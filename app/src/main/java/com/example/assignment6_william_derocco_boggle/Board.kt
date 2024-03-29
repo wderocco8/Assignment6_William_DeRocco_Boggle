@@ -5,15 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.assignment6_william_derocco_boggle.databinding.FragmentBoardBinding
+
 
 class Board : Fragment() {
+    private var _binding: FragmentBoardBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_board, container, false)
+    ): View {
+        _binding = FragmentBoardBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
 }
