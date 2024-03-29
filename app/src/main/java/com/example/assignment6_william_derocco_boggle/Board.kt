@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.assignment6_william_derocco_boggle.databinding.FragmentBoardBinding
 
 
@@ -39,6 +40,11 @@ class Board : Fragment() {
 
         // Call newGame() function when the view is created
         newGame()
+
+        // create button listener for clearing a word
+        binding.clearButton.setOnClickListener {
+            clearWord()
+        }
     }
 
     override fun onDestroyView() {
@@ -48,8 +54,7 @@ class Board : Fragment() {
 
     private fun newGame() {
 
-        // clear clickable ids
-        clickableTileIds.clear()
+
 
         // Access the tile TextViews using binding
         for (i in tileIds.indices) {
@@ -63,6 +68,9 @@ class Board : Fragment() {
                 // make every tile clickable at first
                 clickableTileIds.add(tileId)
 
+                // update color to activeTile status
+                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.activeTile))
+
                 // add onClick listener to update game state
                 textView.setOnClickListener {
                     if (clickableTileIds.contains(tileId)) {
@@ -72,11 +80,13 @@ class Board : Fragment() {
                         // add tileId to set of clicked ids
                         clickedIds.add(tileId)
 
+                        // update color to inactiveTile status
+                        textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.inactiveTile))
+
                         // Disable click listeners for non-adjacent tiles
                         updateClickableTileIds(i, j)
                     }
                 }
-
             }
         }
     }
@@ -115,6 +125,34 @@ class Board : Fragment() {
     private fun updateClickableTileIds(rowIndex: Int, colIndex: Int) {
         // Populate clickableTileIds with adjacent tiles of the clicked tile
         populateClickableTileIds(rowIndex, colIndex)
+    }
+
+    // Function to clear the current word
+    private fun clearWord() {
+        // clear clickableTileIds
+        clickableTileIds.clear()
+
+        // clear clickedIds
+        clickedIds.clear()
+
+        // get rid of any text
+        binding.currentWord.text = ""
+
+        // Access the tile TextViews using binding and RESET color
+        for (i in tileIds.indices) {
+            for (j in 0 until tileIds[i].size) {
+                val tileId = tileIds[i][j]
+                val textView = binding.root.findViewById<TextView>(tileId)
+
+                // update color to activeTile status
+                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.activeTile))
+
+                // re-add clickable Id
+                clickableTileIds.add(tileId)
+            }
+        }
+
+
     }
 }
 
