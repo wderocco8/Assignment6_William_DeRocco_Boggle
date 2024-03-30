@@ -44,6 +44,8 @@ class Board : Fragment() {
     private val clickableTileIds = mutableSetOf<Int>()
     // set to store all clicked IDs in the current word
     private val clickedIds = mutableSetOf<Int>()
+    // set to store all clicked IDs in the SUBMITTED words
+    private val submittedIds = mutableSetOf<Int>()
     // set of all valid words
     private val validWords = HashSet<String>()
     // initialize user's score to 0
@@ -144,6 +146,9 @@ class Board : Fragment() {
             score *= 2
         }
 
+        // Add clicked IDs to submitted IDs
+        clickedIds.forEach { submittedIds.add(it) }
+
         showToast("Valid word +$score: $word")
         submitListener?.onSubmitClicked(score)
     }
@@ -171,6 +176,9 @@ class Board : Fragment() {
         // clear clickedIds
         clickedIds.clear()
 
+        // clear submitted ids
+        submittedIds.clear()
+
         // get rid of any text
         binding.currentWord.text = ""
 
@@ -191,7 +199,8 @@ class Board : Fragment() {
 
                 // add onClick listener to update game state
                 textView.setOnClickListener {
-                    if (clickableTileIds.contains(tileId)) {
+                    // tile cannot be submitted already AND must be adjacent
+                    if (!submittedIds.contains(tileId) && clickableTileIds.contains(tileId)) {
                         // Update currentWord TextView with the clicked tile's letter
                         binding.currentWord.append(textView.text)
 
@@ -260,13 +269,17 @@ class Board : Fragment() {
         for (i in tileIds.indices) {
             for (j in 0 until tileIds[i].size) {
                 val tileId = tileIds[i][j]
-                val textView = binding.root.findViewById<TextView>(tileId)
 
-                // update color to activeTile status
-                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.activeTile))
+                // only make clickable if not in submittedIds
+                if (!submittedIds.contains(tileId)) {
+                    val textView = binding.root.findViewById<TextView>(tileId)
 
-                // re-add clickable Id
-                clickableTileIds.add(tileId)
+                    // update color to activeTile status
+                    textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.activeTile))
+
+                    // re-add clickable Id
+                    clickableTileIds.add(tileId)
+                }
             }
         }
     }
