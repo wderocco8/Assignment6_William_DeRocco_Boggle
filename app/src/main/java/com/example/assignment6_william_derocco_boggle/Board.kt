@@ -10,11 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.assignment6_william_derocco_boggle.databinding.FragmentBoardBinding
+import kotlinx.coroutines.currentCoroutineContext
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import kotlin.math.min
+import kotlin.math.max
 
 
 class Board : Fragment() {
@@ -90,7 +91,7 @@ class Board : Fragment() {
             var line: String?
             // Read each line and add it to the set of valid words
             while (reader.readLine().also { line = it } != null) {
-                validWords.add(line!!.trim())
+                validWords.add(line!!.trim().lowercase())
             }
             // Close the reader
             reader.close()
@@ -104,23 +105,27 @@ class Board : Fragment() {
         // Check if the word exists in the set of valid words
         if (wordLower.length < 4) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word -10: $wordLower (must contain at least 4 letters)")
+            showToast("Invalid word: $wordLower (must contain at least 4 letters)")
         } else if (!hasTwoVowels(wordLower)) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word -10: $wordLower (must contain at least 2 vowels)")
-        } else if (!validWords.contains(wordLower.lowercase())) {
+            showToast("Invalid word: $wordLower (must contain at least 2 vowels)")
+        } else if (!validWords.contains(wordLower)) {
             // Word is not valid, handle accordingly
             showToast("Invalid word -10: $wordLower (not in dictionary)")
+
+            // deduct 10 points if arrived here
+            score = max(score - 10, 0)
+
+            // clear the current word
+            clearWord()
+
+            // call GameState to update score
+            submitListener?.onSubmitClicked(score)
         } else {
             // Word is VALID, handle accordingly
             // score the word and update GameState fragment
             scoreWord(word)
-            return
         }
-
-        // deduct 10 points if arrived here
-        score = min(score - 10, 0)
-        submitListener?.onSubmitClicked(score)
     }
 
     private fun scoreWord(word: String) {
@@ -129,16 +134,20 @@ class Board : Fragment() {
 
         // iterate over each letter in the word
         for (letter in word) {
-            if (letter in vowels) {
-                // vowels count as 5pts
-                score += 5
-            } else if (letter in specials) {
-                // found special consonant -> double score
-                double = true
-                score++
-            } else {
-                // any other consonant
-                score++
+            when (letter) {
+                in vowels -> {
+                    // vowels count as 5pts
+                    score += 5
+                }
+                in specials -> {
+                    // found special consonant -> double score
+                    double = true
+                    score++
+                }
+                else -> {
+                    // any other consonant
+                    score++
+                }
             }
         }
 
@@ -149,7 +158,11 @@ class Board : Fragment() {
         // Add clicked IDs to submitted IDs
         clickedIds.forEach { submittedIds.add(it) }
 
+        // clear the current word
+        clearWord()
+
         showToast("Valid word +$score: $word")
+        // call GameState to update score
         submitListener?.onSubmitClicked(score)
     }
 
@@ -181,6 +194,12 @@ class Board : Fragment() {
 
         // get rid of any text
         binding.currentWord.text = ""
+
+        // reset score
+        score = 0
+
+        // call GameState to update score
+        submitListener?.onSubmitClicked(score)
 
         // Access the tile TextViews using binding
         for (i in tileIds.indices) {

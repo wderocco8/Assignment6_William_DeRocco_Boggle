@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity(), GameState.NewGameListener, Board.Submi
         val gameStateFragment = supportFragmentManager.findFragmentById(R.id.game_state_fragment) as GameState?
 
         // Call the startNewGame method of the Board fragment if it exists
-        gameStateFragment?.udpateScore(newScore)
+        gameStateFragment?.updateScore(newScore)
     }
 }

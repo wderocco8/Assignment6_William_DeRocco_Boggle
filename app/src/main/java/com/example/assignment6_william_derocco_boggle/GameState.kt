@@ -51,7 +51,12 @@ class GameState : Fragment() {
     }
 
     // function to update the scoreText TextView
-    fun udpateScore(score: Int) {
+    fun updateScore(score: Int) {
+        // Check if the binding is null
+        if (_binding == null) {
+            return
+        }
+
         // if negative score, set to 0 (otherwise, set directly
         if (score < 0) {
             binding.scoreText.text = "0"
