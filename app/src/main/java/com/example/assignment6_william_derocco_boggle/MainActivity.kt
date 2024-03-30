@@ -4,7 +4,7 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class MainActivity : AppCompatActivity(), GameState.NewGameListener {
+class MainActivity : AppCompatActivity(), GameState.NewGameListener, Board.SubmitListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,5 +19,13 @@ class MainActivity : AppCompatActivity(), GameState.NewGameListener {
 
         // Call the startNewGame method of the Board fragment if it exists
         boardFragment?.newGame()
+    }
+
+    override fun onSubmitClicked(newScore: Int) {
+        // Get the GameState fragment instance
+        val gameStateFragment = supportFragmentManager.findFragmentById(R.id.game_state_fragment) as GameState?
+
+        // Call the startNewGame method of the Board fragment if it exists
+        gameStateFragment?.udpateScore(newScore)
     }
 }

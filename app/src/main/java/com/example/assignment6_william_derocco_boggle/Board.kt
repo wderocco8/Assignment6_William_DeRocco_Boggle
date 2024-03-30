@@ -1,5 +1,6 @@
 package com.example.assignment6_william_derocco_boggle
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +14,17 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import kotlin.math.min
 
 
 class Board : Fragment() {
+    // interface to see if submit button has been clicked
+    interface SubmitListener {
+        fun onSubmitClicked(newScore: Int)
+    }
+    private var submitListener: SubmitListener? = null
+
+    // use ViewBinding for easier access to elements
     private var _binding: FragmentBoardBinding? = null
     private val binding get() = _binding!!
 
@@ -27,12 +36,18 @@ class Board : Fragment() {
         arrayOf(R.id.tile_30, R.id.tile_31, R.id.tile_32, R.id.tile_33),
     )
 
+    // list of vowels and special consonants
+    private val vowels = "aeiou"
+    private val specials = "szpxq"
+
     // Set to store valid clickable tile IDs
     private val clickableTileIds = mutableSetOf<Int>()
     // set to store all clicked IDs in the current word
     private val clickedIds = mutableSetOf<Int>()
     // set of all valid words
     private val validWords = HashSet<String>()
+    // initialize user's score to 0
+    private var score = 0
 
 
     override fun onCreateView(
@@ -87,22 +102,54 @@ class Board : Fragment() {
         // Check if the word exists in the set of valid words
         if (wordLower.length < 4) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word: $wordLower (must contain at least 4 letters)")
+            showToast("Invalid word -10: $wordLower (must contain at least 4 letters)")
         } else if (!hasTwoVowels(wordLower)) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word: $wordLower (must contain at least 2 vowels)")
+            showToast("Invalid word -10: $wordLower (must contain at least 2 vowels)")
         } else if (!validWords.contains(wordLower.lowercase())) {
             // Word is not valid, handle accordingly
-            showToast("Invalid word: $wordLower (not in dictionary)")
+            showToast("Invalid word -10: $wordLower (not in dictionary)")
         } else {
             // Word is VALID, handle accordingly
-            showToast("Valid word: $wordLower")
+            // score the word and update GameState fragment
+            scoreWord(word)
+            return
         }
+
+        // deduct 10 points if arrived here
+        score = min(score - 10, 0)
+        submitListener?.onSubmitClicked(score)
+    }
+
+    private fun scoreWord(word: String) {
+        // keep track of if score should be doubled
+        var double = false
+
+        // iterate over each letter in the word
+        for (letter in word) {
+            if (letter in vowels) {
+                // vowels count as 5pts
+                score += 5
+            } else if (letter in specials) {
+                // found special consonant -> double score
+                double = true
+                score++
+            } else {
+                // any other consonant
+                score++
+            }
+        }
+
+        if (double) {
+            score *= 2
+        }
+
+        showToast("Valid word +$score: $word")
+        submitListener?.onSubmitClicked(score)
     }
 
     private fun hasTwoVowels(word: String): Boolean {
         // ensure word has at least two vowels
-        val vowels = "aeiou"
         var vowelCount = 0
 
         for (char in word) {
@@ -223,6 +270,21 @@ class Board : Fragment() {
             }
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is SubmitListener) {
+            submitListener = context
+        } else {
+            throw RuntimeException("$context must implement NewGameListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        submitListener = null
+    }
+
 
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

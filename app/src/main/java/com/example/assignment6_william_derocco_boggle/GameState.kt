@@ -50,4 +50,14 @@ class GameState : Fragment() {
         newGameListener = null
     }
 
+    // function to update the scoreText TextView
+    fun udpateScore(score: Int) {
+        // if negative score, set to 0 (otherwise, set directly
+        if (score < 0) {
+            binding.scoreText.text = "0"
+        } else {
+            binding.scoreText.text = score.toString()
+        }
+    }
+
 }
