@@ -2,6 +2,7 @@ package com.example.assignment6_william_derocco_boggle
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import kotlin.math.max
 
+
+private const val TAG = "BoardFrag"
 
 class Board : Fragment() {
     // interface to see if submit button has been clicked
@@ -77,7 +80,7 @@ class Board : Fragment() {
 
         // Create button listener for submitting a word
         binding.submitButton.setOnClickListener {
-            checkWordValidity(binding.currentWord.text.toString())
+            checkWordValidity(binding.currentWord.text.toString().lowercase())
         }
     }
 
@@ -101,17 +104,16 @@ class Board : Fragment() {
     }
 
     private fun checkWordValidity(word: String) {
-        val wordLower = word.lowercase()
         // Check if the word exists in the set of valid words
-        if (wordLower.length < 4) {
+        if (word.length < 4) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word: $wordLower (must contain at least 4 letters)")
-        } else if (!hasTwoVowels(wordLower)) {
+            showToast("Invalid word: $word (must contain at least 4 letters)")
+        } else if (!hasTwoVowels(word)) {
             // Word doesn't contain 2 vowels
-            showToast("Invalid word: $wordLower (must contain at least 2 vowels)")
-        } else if (!validWords.contains(wordLower)) {
+            showToast("Invalid word: $word (must contain at least 2 vowels)")
+        } else if (!validWords.contains(word)) {
             // Word is not valid, handle accordingly
-            showToast("Invalid word -10: $wordLower (not in dictionary)")
+            showToast("Invalid word -10: $word (not in dictionary)")
 
             // deduct 10 points if arrived here
             score = max(score - 10, 0)
@@ -134,6 +136,8 @@ class Board : Fragment() {
 
         // iterate over each letter in the word
         for (letter in word) {
+            val vowel = letter in vowels
+            Log.d(TAG, "letter is $letter $vowel")
             when (letter) {
                 in vowels -> {
                     // vowels count as 5pts
@@ -149,11 +153,14 @@ class Board : Fragment() {
                     score++
                 }
             }
+            Log.d(TAG, "score loop: $score")
         }
 
         if (double) {
             score *= 2
         }
+
+        Log.d(TAG, "score is $score")
 
         // Add clicked IDs to submitted IDs
         clickedIds.forEach { submittedIds.add(it) }
