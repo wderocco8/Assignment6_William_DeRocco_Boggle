@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="activeTile">#b3b3bf</color>
-    <color name="inactiveTile">#767680</color>
+    <color name="inactiveTile">#B0D2D2</color>
+    <color name="submittedTile">#67ACAC</color>
 </resources>
