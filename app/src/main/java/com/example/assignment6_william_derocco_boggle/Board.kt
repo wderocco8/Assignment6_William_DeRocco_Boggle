@@ -165,6 +165,20 @@ class Board : Fragment() {
         // Add clicked IDs to submitted IDs
         clickedIds.forEach { submittedIds.add(it) }
 
+        // change submittedTile colors
+        for (i in tileIds.indices) {
+            for (j in 0 until tileIds[i].size) {
+                val tileId = tileIds[i][j]
+
+                // only update currentWord IDs
+                if (clickedIds.contains(tileId)) {
+                    val textView = binding.root.findViewById<TextView>(tileId)
+
+                    textView.setBackgroundResource(R.drawable.rounded_background_submitted)
+                }
+            }
+        }
+
         // clear the current word
         clearWord()
 
