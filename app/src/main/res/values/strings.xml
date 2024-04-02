@@ -3,4 +3,7 @@
     <string name="clear_button">Clear</string>
     <string name="submit_button">Submit</string>
     <string name="title">Boggle</string>
+    <string name="scoreTitle">Score:</string>
+    <string name="score">0</string>
+    <string name="newGame">New Game</string>
 </resources>

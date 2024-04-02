@@ -173,7 +173,7 @@ class Board : Fragment() {
                 // only update currentWord IDs
                 if (clickedIds.contains(tileId)) {
                     val textView = binding.root.findViewById<TextView>(tileId)
-
+                    // set background to submittedId color
                     textView.setBackgroundResource(R.drawable.rounded_background_submitted)
                 }
             }
@@ -222,14 +222,29 @@ class Board : Fragment() {
         // call GameState to update score
         submitListener?.onSubmitClicked(score)
 
+        // Track the number of vowels generated
+        var vowelCount = 0
+
         // Access the tile TextViews using binding
         for (i in tileIds.indices) {
             for (j in 0 until tileIds[i].size) {
                 val tileId = tileIds[i][j]
                 val textView = binding.root.findViewById<TextView>(tileId)
 
-                // reset tile text to a random letter
-                textView.text = getRandomLetter()
+                // Generate random letter
+                var randomLetter = getRandomLetter()
+
+                // if random letter  is a vowel, increase count
+                if (randomLetter in vowels) {
+                    vowelCount++
+                } else if (vowelCount < 3) {
+                    // If haven't generated 3 vowels, generate a vowel
+                    randomLetter = getRandomVowel()
+                    vowelCount++
+                }
+
+                // reset tile text to the generated letter
+                textView.text = randomLetter
 
                 // make every tile clickable at first
                 clickableTileIds.add(tileId)
@@ -258,9 +273,15 @@ class Board : Fragment() {
         }
     }
 
+
     private fun getRandomLetter(): String {
         val alphabet = ('A'..'Z').toList()
         return alphabet.random().toString()
+    }
+
+    private fun getRandomVowel(): String {
+        val vowelList = vowels.uppercase().toList()
+        return vowelList.random().toString()
     }
 
     // Function to populate clickableTileIds with adjacent tiles
