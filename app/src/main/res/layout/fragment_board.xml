@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp"/>
+
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
@@ -24,8 +34,7 @@
             android:gravity="center"
             android:layout_row="0"
             android:layout_column="0"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_01"
             android:layout_width="60dp"
@@ -35,8 +44,7 @@
             android:gravity="center"
             android:layout_row="0"
             android:layout_column="1"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_02"
             android:layout_width="60dp"
@@ -46,8 +54,7 @@
             android:gravity="center"
             android:layout_row="0"
             android:layout_column="2"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_03"
             android:layout_width="60dp"
@@ -57,8 +64,7 @@
             android:gravity="center"
             android:layout_row="0"
             android:layout_column="3"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
 
         <!-- Row 2 -->
         <TextView
@@ -70,8 +76,7 @@
             android:gravity="center"
             android:layout_row="1"
             android:layout_column="0"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_11"
             android:layout_width="60dp"
@@ -81,8 +86,7 @@
             android:gravity="center"
             android:layout_row="1"
             android:layout_column="1"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_12"
             android:layout_width="60dp"
@@ -92,8 +96,7 @@
             android:gravity="center"
             android:layout_row="1"
             android:layout_column="2"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_13"
             android:layout_width="60dp"
@@ -103,8 +106,7 @@
             android:gravity="center"
             android:layout_row="1"
             android:layout_column="3"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
 
         <!-- Row 3 -->
         <TextView
@@ -116,8 +118,7 @@
             android:gravity="center"
             android:layout_row="2"
             android:layout_column="0"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_21"
             android:layout_width="60dp"
@@ -127,8 +128,7 @@
             android:gravity="center"
             android:layout_row="2"
             android:layout_column="1"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_22"
             android:layout_width="60dp"
@@ -138,8 +138,7 @@
             android:gravity="center"
             android:layout_row="2"
             android:layout_column="2"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_23"
             android:layout_width="60dp"
@@ -149,8 +148,7 @@
             android:gravity="center"
             android:layout_row="2"
             android:layout_column="3"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
 
         <!-- Row 4 -->
         <TextView
@@ -162,8 +160,7 @@
             android:gravity="center"
             android:layout_row="3"
             android:layout_column="0"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_31"
             android:layout_width="60dp"
@@ -173,8 +170,7 @@
             android:gravity="center"
             android:layout_row="3"
             android:layout_column="1"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_32"
             android:layout_width="60dp"
@@ -184,8 +180,7 @@
             android:gravity="center"
             android:layout_row="3"
             android:layout_column="2"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
         <TextView
             android:id="@+id/tile_33"
             android:layout_width="60dp"
@@ -195,8 +190,7 @@
             android:gravity="center"
             android:layout_row="3"
             android:layout_column="3"
-            android:layout_margin="4dp"
-            android:background="@color/activeTile"/>
+            android:layout_margin="4dp" />
 
     </GridLayout>
 

@@ -221,7 +221,7 @@ class Board : Fragment() {
                 clickableTileIds.add(tileId)
 
                 // update color to activeTile status
-                textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.activeTile))
+                textView.setBackgroundResource(R.drawable.rounded_background_active)
 
                 // add onClick listener to update game state
                 textView.setOnClickListener {
@@ -234,7 +234,7 @@ class Board : Fragment() {
                         clickedIds.add(tileId)
 
                         // update color to inactiveTile status
-                        textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.inactiveTile))
+                        textView.setBackgroundResource(R.drawable.rounded_background_inactive)
 
                         // Disable click listeners for non-adjacent tiles
                         updateClickableTileIds(i, j)
@@ -301,7 +301,7 @@ class Board : Fragment() {
                     val textView = binding.root.findViewById<TextView>(tileId)
 
                     // update color to activeTile status
-                    textView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.activeTile))
+                    textView.setBackgroundResource(R.drawable.rounded_background_active)
 
                     // re-add clickable Id
                     clickableTileIds.add(tileId)
